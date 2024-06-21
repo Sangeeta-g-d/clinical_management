@@ -99,4 +99,8 @@ def clinic_register(request):
 
 
 def clinic_db(request):
-    return render(request,'clinic_db.html')
+    data = NewUser.objects.filter(user_type='doctor', added_by = request.user.id)
+    context = {
+        'data':data
+    }
+    return render(request,'clinic_db.html',context)
