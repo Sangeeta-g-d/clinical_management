@@ -48,8 +48,9 @@ def approve_clinic(request, id):
     obj.save()
     return redirect('admin_db')
 
-
-# Create your views here.
+def admin_logout(request):
+    logout(request)
+    return redirect('/admin_login')
 
 
 def clinic_login(request):
