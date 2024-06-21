@@ -66,16 +66,16 @@ def clinic_login(request):
             if user.is_staff:
                 login(request, user)
             # Redirect to a success page.
-                return redirect('') 
+                return redirect('/clinic_db') 
             else:
                 error_message = "Wait till account varifies"
-                messages.error(request, error_message)
-                return render(request, 'clinic_login.html')
+                
+                return render(request, 'clinic_login.html',{'error_message':error_message})
         else:
             # Return an 'invalid login' error message.
             error_message = "Invalid username or password."
-            messages.error(request, error_message)
-            return render(request, 'clinic_login.html')
+            
+            return render(request, 'clinic_login.html',{'error_message':error_message})
     else:
         return render(request, 'clinic_login.html')
     
