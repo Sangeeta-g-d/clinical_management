@@ -10,4 +10,5 @@ urlpatterns = [
     path('clinic_register',views.clinic_register, name="clinic_register"),
     path('admin_logout',views.admin_logout, name="admin_logout"),
     path('clinic_db',views.clinic_db, name="clinic_db"),
+    path('add_doctor',views.add_doctor, name="add_doctor"),
 ]
