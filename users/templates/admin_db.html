@@ -63,8 +63,8 @@
                   <td>{{ x.city }}</td>
                   <td class="wrap-text" style="line-height: 20px;">{{ x.address }}</td>
                   <td>
-                    {% if x.is_staff %}
-                    <a href="/add_marks/{{ x.id }}">
+                    {% if x.is_staff == False %}
+                    <a href="/approve_clinic/{{ x.id }}">
                       <button class="btn btn-primary">Approve</button>
                     </a>
                     {% else %}

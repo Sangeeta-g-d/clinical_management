@@ -8,6 +8,9 @@ from django.db.models.functions import Trim
 from django.db.models import Q
 from datetime import datetime
 
+
+from users.models import NewUser
+
 # Create your views here.
 def admin_login(request):
     if request.method == 'POST':
@@ -35,21 +38,16 @@ def admin_db(request):
     return render(request,'admin_db.html',context)
 
 def delete_clinic(request, id):
-    obj = get_object_or_404(NewUser, pk=student_id)
+    obj = get_object_or_404(NewUser, pk=id)
     obj.delete()
     return redirect('admin_db')
 
 def approve_clinic(request, id):
-    obj = get_object_or_404(NewUser, pk=student_id)
+    obj = get_object_or_404(NewUser, pk=id)
     obj.is_staff = True
-    onj.save()
+    obj.save()
     return redirect('admin_db')
-from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login,logout
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
 
-from users.models import NewUser
 
 # Create your views here.
 
