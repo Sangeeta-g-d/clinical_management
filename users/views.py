@@ -102,15 +102,31 @@ def clinic_db(request):
 
 
 def add_doctor(request):
+    success = False
     if request.method == 'POST':
         qualification = request.POST.get('quali')
         specialization = request.POST.get('speci')
         username = request.POST.get('username')
         phone_no = request.POST.get('contact_no')
-        address = request.POST.get('address')
         email = request.POST.get('email')
-        available_timimg = request.POST.get('timing')
-        city=request.POST.get('city')
-        first_name=request.POST.get('doctor')
-        user = NewUser.objects.create(qualification = qualification, phone_no = phone_no, username = username, email = email, specialization = specialization,available_timings=available_timimg,user_type='doctor',city=city,first_name=first_name)
-    return render(request,'add_doctor.html')
+        available_timings = request.POST.get('timing')
+        city = request.POST.get('city')
+        first_name = request.POST.get('doctor')
+        
+        # Create the new doctor entry in the database
+        user = NewUser.objects.create(
+            qualification=qualification,
+            phone_no=phone_no,
+            username=username,
+            email=email,
+            specialization=specialization,
+            available_timings=available_timings,
+            user_type='doctor',
+            city=city,
+            first_name=first_name
+        )
+        
+        # Set success flag to True
+        success = True
+        
+    return render(request, 'add_doctor.html', {'success': success})
