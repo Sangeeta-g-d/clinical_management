@@ -6,4 +6,6 @@ urlpatterns = [
     path('admin_db',views.admin_db,name="admin_db"),
     path('approve_clinic/<int:id>',views.approve_clinic,name="approve_clinic"),
     path('delete_clinic/<int:id>',views.delete_clinic,name="delete_clinic"),
+    path('clinic_login',views.clinic_login, name="clinic_login"),
+    path('clinic_register',views.clinic_register, name="clinic_register"),
 ]
