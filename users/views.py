@@ -104,3 +104,37 @@ def clinic_db(request):
         'data':data
     }
     return render(request,'clinic_db.html',context)
+
+def add_doctor(request):
+    if request.method == 'POST':
+        qualification = request.POST.get('quali')
+        specialization = request.POST.get('speci')
+        username = request.POST.get('username')
+        phone_no = request.POST.get('contact_no')
+        address = request.POST.get('address')
+        email = request.POST.get('email')
+        available_timimg = request.POST.get('timing')
+        city=request.POST.get('city')
+        first_name=request.POST.get('doctor')
+        if NewUser.objects.filter(username=username).exists():
+            error_message = 'Username already exists. Please choose a different username'
+            return render(request, "add_doctor.html", {'error_message':error_message})
+
+        passw = make_password(phone_no)
+        user = NewUser.objects.create(qualification = qualification, phone_no = phone_no, username = username, email = email, specialization = specialization,available_timings=available_timimg,user_type='doctor',city=city,first_name=first_name, password=  passw)
+    return render(request,'add_doctor.html')
+
+def edit_doc_info(request,id):
+    obj = NewUser.objects.get(id=id)
+    if request.method == 'POST':
+        obj.qualification = request.POST.get('quali')
+        obj.specialization = request.POST.get('speci')
+        obj.username = request.POST.get('username')
+        obj.phone_no = request.POST.get('contact_no')
+        obj.address = request.POST.get('address')
+        obj.email = request.POST.get('email')
+        obj.available_timimg = request.POST.get('timing')
+        obj.city=request.POST.get('city')
+        obj.first_name=request.POST.get('doctor')
+        obj.save()
+    return render(request,'edit_doc_info')

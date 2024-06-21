@@ -7,12 +7,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Add Doctor details</h4>
-                    <form class="form-sample" method="post">
-                      {% error_message %}
-                      <p style="color: red;">
-                        {{error_message}}
-                      </p>
-                      {% endif %}
+                    <form class="form-sample" method="post" id="editDocForm">
                         {% csrf_token %}
                       <p class="card-description">
                        
