@@ -96,3 +96,7 @@ def clinic_register(request):
         user = NewUser.objects.create(first_name = first_name, phone_no = phone_no, username = username, email = email, password = passw,city=city,address=address,user_type='clinic')
         return redirect('clinic_login')
     return render(request,'clinic_register.html')
+
+
+def clinic_db(request):
+    return render(request,'clinic_db.html')

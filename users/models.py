@@ -7,3 +7,6 @@ class NewUser(AbstractUser):
     phone_no = models.CharField(max_length=100, default='employee')
     address = models.CharField(max_length=100, default='employee')
     city = models.CharField(max_length=100, default='employee')
+    qualification=models.CharField(max_length=100, default=' ')
+    specialization=models.CharField(max_length=100, default=' ')
+    available_timings=models.CharField(max_length=100, default=' ')
