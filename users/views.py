@@ -8,6 +8,9 @@ from django.db.models.functions import Trim
 from django.db.models import Q
 from datetime import datetime
 
+
+from users.models import NewUser
+
 # Create your views here.
 def admin_login(request):
     if request.method == 'POST':
@@ -44,6 +47,9 @@ def approve_clinic(request, id):
     obj.is_staff = True
     obj.save()
     return redirect('admin_db')
+
+
+# Create your views here.
 
 
 def clinic_login(request):
