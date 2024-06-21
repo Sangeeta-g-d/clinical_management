@@ -68,7 +68,7 @@ def clinic_login(request):
             # Redirect to a success page.
                 return redirect('') 
             else:
-                error_message = "Invalid username or password."
+                error_message = "Wait till account varifies"
                 messages.error(request, error_message)
                 return render(request, 'clinic_login.html')
         else:
@@ -91,8 +91,8 @@ def clinic_register(request):
         password = request.POST.get('password')
         passw = make_password(password)
         if NewUser.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists. Please choose a different username.')
-            return render(request, "clinic_register.html")
+            error_message = 'Username already exists. Please choose a different username'
+            return render(request, "clinic_register.html", {'error_message':error_message})
 
         user = NewUser.objects.create(first_name = first_name, phone_no = phone_no, username = username, email = email, password = passw,city=city,address=address,user_type='clinic')
         return redirect('clinic_login')
