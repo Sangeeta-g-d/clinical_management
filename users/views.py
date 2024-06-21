@@ -35,23 +35,15 @@ def admin_db(request):
     return render(request,'admin_db.html',context)
 
 def delete_clinic(request, id):
-    obj = get_object_or_404(NewUser, pk=student_id)
+    obj = get_object_or_404(NewUser, pk=id)
     obj.delete()
     return redirect('admin_db')
 
 def approve_clinic(request, id):
-    obj = get_object_or_404(NewUser, pk=student_id)
+    obj = get_object_or_404(NewUser, pk=id)
     obj.is_staff = True
-    onj.save()
+    obj.save()
     return redirect('admin_db')
-from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login,logout
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-
-from users.models import NewUser
-
-# Create your views here.
 
 
 def clinic_login(request):
@@ -97,3 +89,7 @@ def clinic_register(request):
         user = NewUser.objects.create(first_name = first_name, phone_no = phone_no, username = username, email = email, password = passw,city=city,address=address,user_type='clinic')
         return redirect('clinic_login')
     return render(request,'clinic_register.html')
+
+
+def clinic_db(request):
+    return render(request,'clinic_db.html')
