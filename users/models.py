@@ -10,3 +10,4 @@ class NewUser(AbstractUser):
     qualification=models.CharField(max_length=100, default=' ')
     specialization=models.CharField(max_length=100, default=' ')
     available_timings=models.CharField(max_length=100, default=' ')
+    added_by=models.CharField(max_length=100, default=' ')
