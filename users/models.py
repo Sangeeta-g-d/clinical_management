@@ -34,7 +34,17 @@ class AppointmentTimings(models.Model):
     
 
 class Rating(models.Model):
-    patient = models.ForeignKey(NewUser, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='ratings')
+    patient =  models.CharField(max_length=300, default='')
+    doctor = models.CharField(max_length=300, default='')
     rating = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now_add=True)
+
+
+class Prescription(models.Model):
+    appo_id = models.ForeignKey(Appointments, on_delete=models.CASCADE)
+    prescription = models.CharField(max_length=600, default='')
+    date = models.DateTimeField(default=timezone.now, editable=False)  # Automatically sets the current date and time when created
+
+    def __str__(self):
+        return f"Prescription for {self.appo_id.patient_id.first_name} on {self.date}"
+    

@@ -3,11 +3,12 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from . models import Appointments, NewUser, AppointmentTimings, Rating
+from . models import Appointments, NewUser, AppointmentTimings
+from . models import Appointments, NewUser, AppointmentTimings,Prescription
 from django.db.models.functions import Trim
 from django.db.models import Q
 from django.utils import timezone
-
+from django.http import JsonResponse
 
 from users.models import NewUser
 
@@ -268,6 +269,8 @@ def set_timing(request, app_id):
     if request.method == "POST":
         timing = request.POST.get('timing')
         date = request.POST.get('a_date')
+        obj.slot = True
+        obj.save()
         new_timing = AppointmentTimings.objects.create(slot_timing=timing, appo_id=obj, date=date)
 
     context = {
@@ -278,3 +281,57 @@ def set_timing(request, app_id):
 
 
 
+def doctor_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        #user_type = request.user.user_type
+        print(username,password,user)
+        #print("hiii",user_type,username)
+        if user is not None:
+            
+            login(request, user)
+            # Redirect to a success page.
+            return redirect('doctor_db')
+        else:
+            # Return an 'invalid login' error message.
+            error_message = "Invalid username or password."
+            
+            return render(request, 'doctor_login.html',{'error_message':error_message})
+    else:
+        return render(request, 'doctor_login.html')
+    
+def doctor_db(request):
+    patients = AppointmentTimings.objects.select_related('appo_id').filter(appo_id__doctor_id = request.user.id)
+    print(patients)
+    context = {
+        'patients':patients
+    }
+    return render(request,'doctor_db.html',context)
+
+def add_prescription(request):
+    if request.method == 'POST':
+
+        print("hiiiiiiiiiiiiiiiiiii")
+        appo_id = request.POST.get('appo_id')
+        print(appo_id)
+        prescription_text = request.POST.get('prescription')
+        print(prescription_text)
+        try:
+            appointment = Appointments.objects.get(id=appo_id)
+            
+            # Create Prescription instance
+            prescription = Prescription.objects.create(
+                appo_id=appointment,
+                prescription=prescription_text
+            )
+            
+            # Return JSON response if using AJAX
+            return JsonResponse({'success': True, 'prescription_id': prescription.id})
+        
+        except Appointments.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Appointment does not exist'})
+    
+    # Handle GET requests or other cases (should not reach here in typical usage)
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
