@@ -1,0 +1,114 @@
+{% extends 'base1.html' %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Add Doctor details</h4>
+                    <form class="form-sample" method="post" id="editDocForm">
+                        {% csrf_token %}
+                      <p class="card-description">
+                       
+                      </p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Doctor Name</label>
+                            <div class="col-sm-9">
+                              <input type="text" name="doctor" value="{{obj.first_name}}" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Qualification</label>
+                            <div class="col-sm-9">
+                              <input type="text" value="{{obj.qualification}}" name="quali" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Specialization</label>
+                            <div class="col-sm-9">
+                              <input type="text" name="speci" value="{{obj.specialization}}" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">City</label>
+                            <div class="col-sm-9">
+                              <input type="text" name="city" value="{{obj.city}}" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                       
+                      </div>
+                    
+                      
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Username</label>
+                            <div class="col-sm-9">
+                              <input type="text" name="username" value="{{obj.username}}"  class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Contact number</label>
+                            <div class="col-sm-9">
+                              <input type="text" name="contact_no" max="10" value="{{obj.phone_no}}"  class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                              <input type="email" name="email" value="{{obj.email}}" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                              <label class="col-sm-3 col-form-label">Available Timings</label>
+                              <div class="col-sm-9">
+                                <input type="text" name="timing" value="{{obj.available_timings}}" class="form-control">
+                              </div>
+                            </div>
+                      </div>
+                      </div>
+                     
+                      <button class="btn btn-primary" type="submit">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% if success %}
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      Swal.fire({
+                          title: 'Success!',
+                          text: 'Student has been added successfully.',
+                          icon: 'success',
+                          confirmButtonText: 'OK'
+                      }).then((result) => {
+                          if (result.isConfirmed) {
+                              window.location.href = "{% url 'view_students' %}";
+                          }
+                      });
+                  });
+              </script>
+              {% endif %}
+</div>
+</div>
+</div>
+
+{% endblock %}

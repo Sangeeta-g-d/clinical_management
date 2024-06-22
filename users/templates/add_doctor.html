@@ -8,6 +8,13 @@
                 <div class="card-body">
                     <h4 class="card-title">Add Doctor details</h4>
                     <form class="form-sample" method="post">
+                      {% if error_message %}
+                      <p style="color: red;">
+                        {{error_message}}
+                       
+
+                      </p>
+                      {% endif %}
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6">
