@@ -1,4 +1,4 @@
-{% extends 'base2.html' %}
+{% extends 'base1.html' %}
 {% block content %}
 <style>
   .header-container {
@@ -40,39 +40,42 @@
         </div>
         
         <div class="table-responsive pt-3">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Doctor name</th>
-                        <th>Qualification</th>
-                        <th>Specialization</th>
-                        <th>Available timing</th>
-                        <th>Contact no.</th>
-                        <th>City</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for x in doctors %}
-                        <tr>
-                            <td>{{ x.first_name }}</td>
-                            <td>{{ x.qualification }}</td>
-                            <td>{{ x.specialization }}</td>
-                            <td>{{ x.available_timings }}</td>
-                            <td>{{ x.phone_no }}</td>
-                            <td>{{ x.city }}</td>
-                            <td class="px-4 py-3">
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="doctor_id" value="{{ x.id }}">
-                                    <button type="submit" class="btn btn-primary mt-3">Book Appointment</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+               
+                <th>Patient Name</th>
+                <th>Contact no.</th>
+                <th>Address</th>
+                <th>Doctor Name</th>
+                <th>Available Timings</th>
+                <th>Specialization</th>
+                <th>Requested Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for x in data %}
+                <tr>
+                  <td>{{ x.patient_id.first_name }}</td>
+                  <td>{{ x.patient_id.phone_no }}</td>
+                  <td>{{ x.patient_id.address }}</td>
+                  <td>{{ x.doctor_id.first_name }}</td>
+                  <td>{{ x.doctor_id.available_timings }}</td>
+                 
+                  <td>{{ x.doctor_id.specialization }}</td>
+                  <td>{{ x.timings }}</td>
+                 
+               
+                  <td class="px-4 py-3">
+                    <a href="">
+                        <button class="btn btn-primary mt-3" >Set Timings</button></a>
+                </td>
+                 
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
