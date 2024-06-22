@@ -1,0 +1,96 @@
+{% extends 'base1.html' %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add appointment timing for {{obj.patient_id.first_name}}</h4>
+                    <div style="margin-bottom: 20px;">
+                    {% if selected_timings %}
+                    {% for x in selected_timings %}
+                    Selected timings for {{obj.doctor_id.first_name}} :
+                   
+                    <div class="card">
+                        <p>{{x.slot_timing}}</p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>There is no selected timing yet</p>
+                    {% endif %}
+                </div> 
+                    <form  class="form-sample" method="post">
+                      {% if error_message %}
+                      <p style="color: red;">
+                        {{error_message}}
+                       
+
+                      </p>
+                      {% endif %}
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Doctor Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" value="{{obj.doctor_id.first_name}}" name="doctor" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Available timings</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" value="{{obj.doctor_id.available_timings}}" name="quali" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Add timing</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="timing" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Select date</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" name="a_date" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        
+                         
+                        </div>
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </form>
+                    {% if success %}
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Doctor details have been added successfully.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "{% url 'clinic_db' %}";
+                                }
+                            });
+                        });
+                    </script>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+</div>
+
+{% endblock %}
