@@ -1,5 +1,29 @@
 {% extends 'base1.html' %}
 {% block content %}
+<style>
+    .card {
+    border: 2px solid #007BFF; /* Blue border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the card */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+    max-width: 300px; /* Maximum width of the card */
+    margin: 10px; /* Margin around the card */
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.card p {
+    font-size: 16px; /* Font size */
+    color: #333; /* Text color */
+    margin: 0; /* Remove margin around paragraph */
+    text-align: center; /* Center align text */
+    font-family: 'Arial', sans-serif; /* Font style */
+}
+</style>
 <div class="main-panel">
     <div class="content-wrapper">
       <div class="row">
