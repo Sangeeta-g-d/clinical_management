@@ -15,6 +15,30 @@
   .search-container .form-control {
     margin-right: 10px;
   }
+  .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 2rem;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 2rem;
+        }
+
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #f5b301;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f5b301;
+        }
 </style>
 
   
@@ -52,6 +76,8 @@
                 <th>Username</th>
                 <th>Contact no.</th>
                 <th>Action</th>
+               
+                <th>Rating</th>
               </tr>
             </thead>
             <tbody>
@@ -64,11 +90,25 @@
                   <td>{{ x.available_timings }}</td>
                   <td>{{ x.username }}</td>
                   <td>{{ x.phone_no }}</td>
-                  <td>{{ x.city }}</td>
+                
                
                   <td class="px-4 py-3">
                     <a href="/edit_doc_info/{{ x.id }}" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></a>
                     <a href="" class="text-red-600 hover:text-red-800 ml-4" onclick="return confirm('Are you sure you want to delete this student record?')"><i class="fas fa-trash"></i></a>
+                </td>
+                <td>
+                  <div class="star-rating">
+                    <input type="radio" id="rating5_{{ x.id }}" name="rating" value="5">
+                    <label for="rating5_{{ x.id }}" title="5 stars">&#9733;</label>
+                    <input type="radio" id="rating4_{{ x.id }}" name="rating" value="4">
+                    <label for="rating4_{{ x.id }}" title="4 stars">&#9733;</label>
+                    <input type="radio" id="rating3_{{ x.id }}" name="rating" value="3">
+                    <label for="rating3_{{ x.id }}" title="3 stars">&#9733;</label>
+                    <input type="radio" id="rating2_{{ x.id }}" name="rating" value="2">
+                    <label for="rating2_{{ x.id }}" title="2 stars">&#9733;</label>
+                    <input type="radio" id="rating1_{{ x.id }}" name="rating" value="1">
+                    <label for="rating1_{{ x.id }}" title="1 star">&#9733;</label>
+                </div>
                 </td>
                  
                 </tr>
