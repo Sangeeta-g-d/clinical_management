@@ -16,6 +16,18 @@ class NewUser(AbstractUser):
 
 class Appointments(models.Model):
     clinic_id = models.CharField(max_length=100, default='patient')
-    patient_id = models.ForeignKey('NewUser', on_delete=models.CASCADE, related_name='patient_appointments')
-    doctor_id = models.ForeignKey('NewUser', on_delete=models.CASCADE, related_name='doctor_appointments')
+    patient_id = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='patient_appointments')
+    doctor_id = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='doctor_appointments')
     timings = models.DateTimeField(default=timezone.now)
+    slot = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.patient_id} with {self.doctor_id} on {self.timings}"
+
+class AppointmentTimings(models.Model):
+    appo_id = models.ForeignKey(Appointments, on_delete=models.CASCADE)
+    date = models.DateField()
+    slot_timing = models.CharField(max_length=300, default='')
+
+    def __str__(self):
+        return f"{self.appo_id} - {self.date} - {self.slot_timing}"

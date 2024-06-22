@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from . models import Appointments, NewUser
+from . models import Appointments, NewUser, AppointmentTimings
 from django.db.models.functions import Trim
 from django.db.models import Q
 from django.utils import timezone
@@ -254,3 +254,23 @@ def doctor_login(request):
 def doctor_db(request):
     return render(request,'doctor_db.html')
     
+def set_timing(request, app_id):
+    # Fetch the specific appointment by ID
+    obj = get_object_or_404(Appointments.objects.select_related('patient_id', 'doctor_id'), id=app_id)
+    
+    # Extract doctor ID
+    doctor_id = obj.doctor_id.id
+
+    # Fetch timings related to the doctor's appointments
+    selected_timings = AppointmentTimings.objects.filter(appo_id__doctor_id=doctor_id)
+
+    if request.method == "POST":
+        timing = request.POST.get('timing')
+        date = request.POST.get('a_date')
+        new_timing = AppointmentTimings.objects.create(slot_timing=timing, appo_id=obj, date=date)
+
+    context = {
+        'obj': obj,
+        'selected_timings': selected_timings,
+    }
+    return render(request, 'set_timing.html', context)

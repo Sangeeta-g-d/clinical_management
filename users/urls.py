@@ -24,4 +24,5 @@ urlpatterns = [
     path('doctor_db',views.doctor_db, name="doctor_db"),
 
 
+    path('set_timing/<int:app_id>',views.set_timing, name="set_timing"),
 ]
