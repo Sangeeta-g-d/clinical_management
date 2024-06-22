@@ -91,42 +91,6 @@
 </div>
 
 <script>
-<<<<<<< HEAD
-  $('#addPrescriptionModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget); // Button that triggered the modal
-      var patientId = button.data('id'); // Extract info from data-* attributes
-      var patientName = button.data('name');
-      
-      var modal = $(this);
-      modal.find('.modal-title span#patientName').text(patientName);
-      modal.find('#patientNameReadOnly').val(patientName); // Set patient's first name in readonly input
-      modal.find('input#appo_id').val(patientId); // Set the appo_id in the hidden input
-  });
-
-  // Optional: Validate and submit form via AJAX
-  $('#addPrescriptionForm').submit(function(event) {
-      event.preventDefault();
-      var form = $(this);
-      
-      $.ajax({
-          type: form.attr('method'),
-          url: form.attr('action'),
-          data: form.serialize(),
-          success: function(response) {
-              // Handle success if needed
-              $('#addPrescriptionModal').modal('hide');
-              // Optionally update UI or reload page
-          },
-          error: function(xhr, status, error) {
-              // Handle errors if needed
-              console.error(xhr.responseText);
-          }
-      });
-  });
-</script>
-
-{% endblock %}
-=======
     $(document).ready(function() {
         $('.add-prescription-btn').click(function() {
             var appId = $(this).data('id');
@@ -140,4 +104,3 @@
 </script>
 
 {% endblock %}
->>>>>>> d30ca4eba213d73c86fe2f67e1c347f6273c719a

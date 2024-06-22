@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from . models import Appointments, NewUser, AppointmentTimings
+from . models import Appointments, NewUser, AppointmentTimings, Rating
 from . models import Appointments, NewUser, AppointmentTimings,Prescription
 from django.db.models.functions import Trim
 from django.db.models import Q
@@ -331,4 +331,27 @@ def add_prescription(request):
     return redirect('appointments_list')  # Redirect back to appointments list if not a POST request
 
 def doctor_prescription(request):
-    return render(request, 'doctor_prescription.html')
+    data = Prescription.objects.select_related('appo_id__doctor_id').filter(appo_id__patient_id=request.user.id)
+    
+    # Fetch ratings for the prescriptions
+    ratings = Rating.objects.filter(patient=request.user, prescription__in=data).select_related('prescription')
+    ratings_dict = {rating.prescription_id: rating for rating in ratings}
+
+    if request.method == "POST":
+        prescription_id = request.POST.get('prescription_id')
+        rating_value = request.POST.get('rating')
+        
+        if prescription_id and rating_value:
+            prescription = Prescription.objects.get(id=prescription_id)
+            patient = request.user
+            doctor = prescription.appo_id.doctor_id
+
+            # Create or update the Rating object
+            rating, created = Rating.objects.update_or_create(
+                prescription=prescription,
+                patient=patient,
+                defaults={'doctor': doctor, 'rating': rating_value, 'date': timezone.now()}
+            )
+            return redirect('doctor_prescription')  # Redirect to the same page or another page
+
+    return render(request, 'doctor_prescription.html', {'data': data, 'ratings_dict': ratings_dict})
