@@ -1,0 +1,87 @@
+{% extends 'base3.html' %}
+{% block content %}
+<style>
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .search-container,
+  .filter-container {
+    display: flex;
+    align-items: center;
+  }
+  .search-container .form-control {
+    margin-right: 10px;
+  }
+</style>
+
+  
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">List Of Clinics</h4>
+        <div class="header-container">
+         
+         
+         
+        </div>
+        
+        <div class="row" style="margin-top: 50px;">
+            
+            <div class="col-md-12 grid-margin transparent" >
+                {% for x in clinics %}
+                <div class="row">
+                    <div class="col-md-4 mb-4 stretch-card transparent">
+                        <div class="card card-dark-blue">
+                            <div class="card-body">
+                                <p class="mb-4" style="font-size: 23px;">{{x.first_name}}</p>
+                                <p>Contact number - {{x.phone_no}}</p>
+                                <p>{{x.address}}</p>
+                                <a href="/doctor_appo/{{x.id}}">
+                                <button class="btn btn-primary mt-3" style="background-color: rgb(243, 235, 224);color:rgb(33, 33, 33)">View Doctors</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+             {% endfor %}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function submitFilterForm() {
+      document.getElementById('filterForm').submit();
+    }
+    window.submitFilterForm = submitFilterForm;
+  });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const elements = document.querySelectorAll('.wrap-text');
+
+        elements.forEach(function (element) {
+            const text = element.innerText;
+            const maxLength = 36;
+            let wrappedText = '';
+
+            for (let i = 0; i < text.length; i += maxLength) {
+                wrappedText += text.substring(i, i + maxLength) + '<br>';
+            }
+
+            element.innerHTML = wrappedText;
+        });
+    });
+</script>
+{% endblock %}

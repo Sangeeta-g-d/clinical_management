@@ -18,6 +18,10 @@ def patient_logout(request):
     return redirect('/patient_login')
 
 
+def clinic_logout(request):
+    logout(request)
+    return redirect('/clinic_login')
+
 
 # Create your views here.
 def admin_login(request):
@@ -224,3 +228,29 @@ def appointment_list(request):
     }
 
     return render(request, 'appointment_list.html', context)
+
+
+def doctor_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        #user_type = request.user.user_type
+        print(username,password,user)
+        #print("hiii",user_type,username)
+        if user is not None:
+            
+            login(request, user)
+            # Redirect to a success page.
+            return redirect('doctor_db')
+        else:
+            # Return an 'invalid login' error message.
+            error_message = "Invalid username or password."
+            
+            return render(request, 'doctor_login.html',{'error_message':error_message})
+    else:
+        return render(request, 'doctor_login.html')
+    
+def doctor_db(request):
+    return render(request,'doctor_db.html')
+    
