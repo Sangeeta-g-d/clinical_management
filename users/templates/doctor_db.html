@@ -34,8 +34,8 @@
         <div class="row" style="margin-top: 50px;">
             
             <div class="col-md-12 grid-margin transparent" >
-                {% for x in patients %}
-                <div class="row">
+              {% for x in patients %}
+              <div class="row">
                   <div class="col-md-4 mb-4 stretch-card transparent">
                       <div class="card card-light-blue">
                           <div class="card-body">
@@ -43,13 +43,12 @@
                               <p>Email - {{ x.appo_id.patient_id.email }}</p>
                               <p>Contact number - {{ x.appo_id.patient_id.phone_no }}</p>
                               <p>{{ x.appo_id.patient_id.address }}</p>
-                              <button class="btn btn-primary mt-3" style="background-color: rgb(243, 235, 224); color: rgb(33, 33, 33)" data-toggle="modal" data-target="#addPrescriptionModal" data-id="{{ x.id }}" data-name="{{ x.appo_id.patient_id.first_name }}">Add prescription</button>
+                              <button class="btn btn-primary mt-3" style="background-color: rgb(243, 235, 224); color: rgb(33, 33, 33)" data-toggle="modal" data-target="#addPrescriptionModal" data-id="{{ x.appo_id_id }}" data-name="{{ x.appo_id.patient_id.first_name }}">Add prescription</button>
                           </div>
                       </div>
                   </div>
               </div>
-                
-             {% endfor %}
+          {% endfor %}
             </div>
           </div>
       </div>
@@ -69,7 +68,8 @@
                   <span aria-hidden="true">&times;</span>
               </button>
           </div>
-          <form id="addPrescriptionForm" action="/add_prescription/" method="post">
+          <form id="addPrescriptionForm" method="post">
+              {% csrf_token %}
               <div class="modal-body">
                   <!-- Display patient first name in readonly mode -->
                   <div class="form-group">
@@ -83,8 +83,6 @@
                       <label for="prescription">Prescription</label>
                       <textarea class="form-control" id="prescription" name="prescription" rows="3" required></textarea>
                   </div>
-                  <!-- Add CSRF token -->
-                  {% csrf_token %}
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -94,38 +92,4 @@
       </div>
   </div>
 </div>
-
-<script>
-  $('#addPrescriptionModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget); // Button that triggered the modal
-      var patientId = button.data('id'); // Extract info from data-* attributes
-      var patientName = button.data('name');
-      
-      var modal = $(this);
-      modal.find('.modal-title span#patientName').text(patientName);
-      modal.find('#patientNameReadOnly').val(patientName); // Set patient's first name in readonly input
-      modal.find('input#appo_id').val(patientId); // Set the appo_id in the hidden input
-  });
-
-  // Optional: Validate and submit form via AJAX
-  $('#addPrescriptionForm').submit(function(event) {
-      event.preventDefault();
-      var form = $(this);
-      
-      $.ajax({
-          type: form.attr('method'),
-          url: form.attr('action'),
-          data: form.serialize(),
-          success: function(response) {
-              // Handle success if needed
-              $('#addPrescriptionModal').modal('hide');
-              // Optionally update UI or reload page
-          },
-          error: function(xhr, status, error) {
-              // Handle errors if needed
-              console.error(xhr.responseText);
-          }
-      });
-  });
-</script>
 {% endblock %}
