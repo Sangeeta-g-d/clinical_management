@@ -1,0 +1,120 @@
+{% extends 'base2.html' %}
+{% block content %}
+<style>
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .search-container,
+  .filter-container {
+    display: flex;
+    align-items: center;
+  }
+  .search-container .form-control {
+    margin-right: 10px;
+  }
+  .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 2rem;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 2rem;
+        }
+
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #f5b301;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f5b301;
+        }
+</style>
+
+  
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card position-relative">
+            <div class="card-body">
+              <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="row">
+                      <div class="col-md-12 col-xl-12 d-flex flex-column justify-content-start">
+                        <div class="ml-xl-12 mt-3">
+                        <p class="card-title">Detailed Reports</p>
+                          <h1 class="text-primary">$34040</h1>
+                          <h3 class="font-weight-500 mb-xl-4 text-primary">North America</h3>
+                          <p class="mb-2 mb-xl-0">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
+                        </div>  
+                        <form method="post">
+                          {% csrf_token %}
+                          <div class="star-rating">
+                              <input type="radio" id="rating5" name="rating" value="5">
+                              <label for="rating5" title="5 stars">&#9733;</label>
+                              <input type="radio" id="rating4" name="rating" value="4">
+                              <label for="rating4" title="4 stars">&#9733;</label>
+                              <input type="radio" id="rating3" name="rating" value="3">
+                              <label for="rating3" title="3 stars">&#9733;</label>
+                              <input type="radio" id="rating2" name="rating" value="2">
+                              <label for="rating2" title="2 stars">&#9733;</label>
+                              <input type="radio" id="rating1" name="rating" value="1">
+                              <label for="rating1" title="1 star">&#9733;</label>
+                          </div>
+                          <button type="submit">Submit</button>
+                      </form>
+                        </div>
+                     
+                    </div>
+                  </div>
+                
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+</div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function submitFilterForm() {
+      document.getElementById('filterForm').submit();
+    }
+    window.submitFilterForm = submitFilterForm;
+  });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const elements = document.querySelectorAll('.wrap-text');
+
+        elements.forEach(function (element) {
+            const text = element.innerText;
+            const maxLength = 36;
+            let wrappedText = '';
+
+            for (let i = 0; i < text.length; i += maxLength) {
+                wrappedText += text.substring(i, i + maxLength) + '<br>';
+            }
+
+            element.innerHTML = wrappedText;
+        });
+    });
+</script>
+{% endblock %}

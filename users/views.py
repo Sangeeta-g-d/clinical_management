@@ -191,7 +191,8 @@ def patient_login(request):
         return render(request, 'patient_login.html')
     
 def patient_db(request):
-    return render(request,'patient_db.html')
+    clinics=NewUser.objects.filter(user_type='clinic')
+    return render(request,'patient_db.html', {'clinics':clinics})
 
 def book_appointment(request):
     clinics=NewUser.objects.filter(user_type='clinic')
@@ -280,26 +281,22 @@ def doctor_db(request):
 
 def add_prescription(request):
     if request.method == 'POST':
-
-        print("hiiiiiiiiiiiiiiiiiii")
         appo_id = request.POST.get('appo_id')
-        print(appo_id)
         prescription_text = request.POST.get('prescription')
-        print(prescription_text)
-        try:
-            appointment = Appointments.objects.get(id=appo_id)
-            
-            # Create Prescription instance
-            prescription = Prescription.objects.create(
-                appo_id=appointment,
-                prescription=prescription_text
-            )
-            
-            # Return JSON response if using AJAX
-            return JsonResponse({'success': True, 'prescription_id': prescription.id})
+        print("*****************************************************88",appo_id)
+        # Assuming appo_id is an integer
+        appointment = Appointments.objects.get(id=appo_id)
         
-        except Appointments.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Appointment does not exist'})
+        # Create Prescription object
+        prescription = Prescription.objects.create(
+            appo_id=appointment,
+            prescription=prescription_text
+        )
+        
+        # Optionally, you can add any additional logic here (e.g., redirect to a success page)
+        return redirect('/doctor_db')  # Replace 'appointments_list' with your actual URL name for the appointments list page
     
-    # Handle GET requests or other cases (should not reach here in typical usage)
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
+    return redirect('appointments_list')  # Redirect back to appointments list if not a POST request
+
+def doctor_prescription(request):
+    return render(request, 'doctor_prescription.html')
