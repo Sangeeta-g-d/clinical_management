@@ -50,7 +50,8 @@
                 <th>Doctor Name</th>
                 <th>Available Timings</th>
                 <th>Specialization</th>
-                <th>Requested Date</th>
+                <th>Requested on</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -65,11 +66,22 @@
                  
                   <td>{{ x.doctor_id.specialization }}</td>
                   <td>{{ x.timings }}</td>
-                 
-               
+                 <td>
+                  {% if x.slot == True %}
+                  <p>Timing alloted</p>
+                  {% else %}
+                  <p>Timing not alloted</p>
+                 </td>
+                 {% endif %}
+              
+
                   <td class="px-4 py-3">
+                    {% if x.slot == True %}
+                    <button disabled class="btn btn-primary mt-3" >Set Timings</button>
+                    {% else %}
                     <a href="/set_timing/{{x.id}}">
                         <button class="btn btn-primary mt-3" >Set Timings</button></a>
+                        {% endif %}
                 </td>
                  
                 </tr>

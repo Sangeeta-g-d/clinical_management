@@ -1,28 +1,36 @@
 {% extends 'base1.html' %}
 {% block content %}
 <style>
-    .card {
+   .cards1-container {
+    display: flex; /* Enable flexbox */
+    flex-wrap: wrap; /* Allow wrapping to next line */
+    gap: 20px; /* Space between cards */
+    justify-content: flex-start; /* Align cards to the start */
+}
+
+.card1 {
     border: 2px solid #007BFF; /* Blue border */
     border-radius: 10px; /* Rounded corners */
     padding: 20px; /* Padding inside the card */
     background-color: #f9f9f9; /* Light background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     transition: box-shadow 0.3s ease; /* Smooth shadow transition */
-    max-width: 300px; /* Maximum width of the card */
-    margin: 10px; /* Margin around the card */
+    width: calc(33% - 40px); /* Set width to 33% minus gap space */
+    box-sizing: border-box; /* Include padding and border in width */
 }
 
-.card:hover {
+.card1:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
 }
 
-.card p {
+.card1 p {
     font-size: 16px; /* Font size */
     color: #333; /* Text color */
     margin: 0; /* Remove margin around paragraph */
     text-align: center; /* Center align text */
     font-family: 'Arial', sans-serif; /* Font style */
 }
+
 </style>
 <div class="main-panel">
     <div class="content-wrapper">
@@ -32,18 +40,20 @@
                 <div class="card-body">
                     <h4 class="card-title">Add appointment timing for {{obj.patient_id.first_name}}</h4>
                     <div style="margin-bottom: 20px;">
-                    {% if selected_timings %}
-                    {% for x in selected_timings %}
-                    Selected timings for {{obj.doctor_id.first_name}} :
-                   
-                    <div class="card">
-                        <p>{{x.slot_timing}}</p>
+                        {% if selected_timings %}
+                        <p>Selected timings for {{obj.doctor_id.first_name}} :</p>
+                        <div class="cards1-container">
+                            {% for x in selected_timings %}
+                            <div class="card1">
+                                <p>Timing: {{x.slot_timing}}<br>Date: {{x.date}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p>There is no selected timing yet</p>
+                        {% endif %}
                     </div>
-                    {% endfor %}
-                    {% else %}
-                    <p>There is no selected timing yet</p>
-                    {% endif %}
-                </div> 
+                    
                     <form  class="form-sample" method="post">
                       {% if error_message %}
                       <p style="color: red;">

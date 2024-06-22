@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path('admin_login',views.admin_login,name="admin_login"),
     path('admin_db',views.admin_db,name="admin_db"),
+    path('doctor_login',views.doctor_login,name="doctor_login"),
+    path('doctor_db',views.doctor_db,name="doctor_db"),
     path('approve_clinic/<int:id>',views.approve_clinic,name="approve_clinic"),
     path('delete_clinic/<int:id>',views.delete_clinic,name="delete_clinic"),
     path('clinic_login',views.clinic_login, name="clinic_login"),
@@ -20,4 +22,5 @@ urlpatterns = [
     path('patient_logout',views.patient_logout, name="patient_logout"),
     path('appointment_list',views.appointment_list, name="appointment_list"),
     path('set_timing/<int:app_id>',views.set_timing, name="set_timing"),
+    path('add_prescription/', views.add_prescription, name='add_prescription'),
 ]
