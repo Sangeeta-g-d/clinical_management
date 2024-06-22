@@ -106,12 +106,12 @@ def clinic_db(request):
     return render(request,'clinic_db.html',context)
 
 def add_doctor(request):
+    success = False
     if request.method == 'POST':
         qualification = request.POST.get('quali')
         specialization = request.POST.get('speci')
         username = request.POST.get('username')
         phone_no = request.POST.get('contact_no')
-        address = request.POST.get('address')
         email = request.POST.get('email')
         available_timimg = request.POST.get('timing')
         city=request.POST.get('city')
