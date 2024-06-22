@@ -333,7 +333,30 @@ def add_prescription(request):
     return redirect('appointments_list')  # Redirect back to appointments list if not a POST request
 
 def doctor_prescription(request):
-    return render(request, 'doctor_prescription.html')
+    data = Prescription.objects.select_related('appo_id__doctor_id').filter(appo_id__patient_id=request.user.id)
+    
+    # Fetch ratings for the prescriptions
+    ratings = Rating.objects.filter(patient=request.user, prescription__in=data).select_related('prescription')
+    ratings_dict = {rating.prescription_id: rating for rating in ratings}
+
+    if request.method == "POST":
+        prescription_id = request.POST.get('prescription_id')
+        rating_value = request.POST.get('rating')
+        
+        if prescription_id and rating_value:
+            prescription = Prescription.objects.get(id=prescription_id)
+            patient = request.user
+            doctor = prescription.appo_id.doctor_id
+
+            # Create or update the Rating object
+            rating, created = Rating.objects.update_or_create(
+                prescription=prescription,
+                patient=patient,
+                defaults={'doctor': doctor, 'rating': rating_value, 'date': timezone.now()}
+            )
+            return redirect('doctor_prescription')  # Redirect to the same page or another page
+
+    return render(request, 'doctor_prescription.html', {'data': data, 'ratings_dict': ratings_dict})
 
 def appointment_request(request):
     appointment_request = Appointments.objects.select_related('doctor_id').filter(patient_id=request.user.id)
