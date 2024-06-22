@@ -22,7 +22,6 @@ urlpatterns = [
     path('appointment_list',views.appointment_list, name="appointment_list"),
     path('doctor_login',views.doctor_login, name="doctor_login"),
     path('doctor_db',views.doctor_db, name="doctor_db"),
-
-
+   
     path('set_timing/<int:app_id>',views.set_timing, name="set_timing"),
 ]

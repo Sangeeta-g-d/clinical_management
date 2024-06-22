@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from . models import Appointments, NewUser, AppointmentTimings
+from . models import Appointments, NewUser, AppointmentTimings, Rating
 from django.db.models.functions import Trim
 from django.db.models import Q
 from django.utils import timezone
@@ -195,6 +195,7 @@ def patient_login(request):
         return render(request, 'patient_login.html')
     
 def patient_db(request):
+    
     return render(request,'patient_db.html')
 
 def book_appointment(request):
@@ -274,3 +275,6 @@ def set_timing(request, app_id):
         'selected_timings': selected_timings,
     }
     return render(request, 'set_timing.html', context)
+
+
+

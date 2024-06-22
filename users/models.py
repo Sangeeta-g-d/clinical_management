@@ -31,3 +31,10 @@ class AppointmentTimings(models.Model):
 
     def __str__(self):
         return f"{self.appo_id} - {self.date} - {self.slot_timing}"
+    
+
+class Rating(models.Model):
+    patient =  models.CharField(max_length=300, default='')
+    doctor = models.CharField(max_length=300, default='')
+    rating = models.PositiveIntegerField()
+    date = models.DateTimeField(auto_now_add=True)
