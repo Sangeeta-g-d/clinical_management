@@ -32,6 +32,7 @@ class AppointmentTimings(models.Model):
 
     def __str__(self):
         return f"{self.appo_id} - {self.date} - {self.slot_timing}"
+    
 
 
 class Prescription(models.Model):
@@ -41,4 +42,12 @@ class Prescription(models.Model):
 
     def __str__(self):
         return f"Prescription for {self.appo_id.patient_id.first_name} on {self.date}"
-    
+   
+ 
+
+class Rating(models.Model):
+    prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE)
+    patient = models.ForeignKey(NewUser, on_delete=models.CASCADE, default='')
+    doctor = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='ratings', default='')
+    rating = models.CharField(max_length=600, default='')
+    date = models.DateTimeField(auto_now_add=True)

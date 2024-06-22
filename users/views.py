@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
+from . models import Appointments, NewUser, AppointmentTimings, Rating
 from . models import Appointments, NewUser, AppointmentTimings,Prescription
 from django.db.models.functions import Trim
 from django.db.models import Q
@@ -17,6 +18,10 @@ def patient_logout(request):
     logout(request)
     return redirect('/patient_login')
 
+
+def clinic_logout(request):
+    logout(request)
+    return redirect('/clinic_login')
 
 
 # Create your views here.
@@ -197,6 +202,7 @@ def patient_db(request):
 def book_appointment(request):
     clinics=NewUser.objects.filter(user_type='clinic')
     return render(request,'book_appointment.html',{'clinics':clinics})
+
 def doctor_appo(request, id):
     patient_id = request.user.id
     clinic_id = id
@@ -226,6 +232,31 @@ def appointment_list(request):
 
     return render(request, 'appointment_list.html', context)
 
+
+def doctor_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        #user_type = request.user.user_type
+        print(username,password,user)
+        #print("hiii",user_type,username)
+        if user is not None:
+            
+            login(request, user)
+            # Redirect to a success page.
+            return redirect('doctor_db')
+        else:
+            # Return an 'invalid login' error message.
+            error_message = "Invalid username or password."
+            
+            return render(request, 'doctor_login.html',{'error_message':error_message})
+    else:
+        return render(request, 'doctor_login.html')
+    
+def doctor_db(request):
+    return render(request,'doctor_db.html')
+    
 def set_timing(request, app_id):
     # Fetch the specific appointment by ID
     obj = get_object_or_404(Appointments.objects.select_related('patient_id', 'doctor_id'), id=app_id)
@@ -250,6 +281,7 @@ def set_timing(request, app_id):
         'selected_timings': selected_timings,
     }
     return render(request, 'set_timing.html', context)
+
 
 
 def doctor_login(request):
@@ -309,3 +341,27 @@ def appointment_request(request):
     context = {
         'appointment_request':appointment_request    }
     return render(request, 'appointment_request.html',context)
+    data = Prescription.objects.select_related('appo_id__doctor_id').filter(appo_id__patient_id=request.user.id)
+    
+    # Fetch ratings for the prescriptions
+    ratings = Rating.objects.filter(patient=request.user, prescription__in=data).select_related('prescription')
+    ratings_dict = {rating.prescription_id: rating for rating in ratings}
+
+    if request.method == "POST":
+        prescription_id = request.POST.get('prescription_id')
+        rating_value = request.POST.get('rating')
+        
+        if prescription_id and rating_value:
+            prescription = Prescription.objects.get(id=prescription_id)
+            patient = request.user
+            doctor = prescription.appo_id.doctor_id
+
+            # Create or update the Rating object
+            rating, created = Rating.objects.update_or_create(
+                prescription=prescription,
+                patient=patient,
+                defaults={'doctor': doctor, 'rating': rating_value, 'date': timezone.now()}
+            )
+            return redirect('doctor_prescription')  # Redirect to the same page or another page
+
+    return render(request, 'doctor_prescription.html', {'data': data, 'ratings_dict': ratings_dict})

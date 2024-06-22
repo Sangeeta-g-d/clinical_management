@@ -15,6 +15,30 @@
   .search-container .form-control {
     margin-right: 10px;
   }
+  .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 2rem;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 2rem;
+        }
+
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #f5b301;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f5b301;
+        }
 </style>
 
   
@@ -34,9 +58,9 @@
                 <input type="text" name="search" class="form-control mr-2" placeholder="Search..." value="{{ search_query }}">
                 <button type="submit" class="btn btn-danger">Search</button>
               </div>
-            </form>
+            </div>
           </div>
-         
+          
         </div>
         
         <div class="row" style="margin-top: 50px;">
@@ -61,9 +85,6 @@
             </div>
           </div>
       </div>
-    </div>
-  </div>
-</div>
 </div>
 </div>
 <script>
