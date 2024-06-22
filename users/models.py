@@ -20,7 +20,8 @@ class Appointments(models.Model):
     doctor_id = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='doctor_appointments')
     timings = models.DateTimeField(default=timezone.now)
     slot = models.BooleanField(default=False)
-
+    slot_timing = models.CharField(max_length=300, default='')
+    slot_date = models.CharField(max_length=400,default='')
     def __str__(self):
         return f"{self.patient_id} with {self.doctor_id} on {self.timings}"
 

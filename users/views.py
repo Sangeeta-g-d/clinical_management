@@ -240,6 +240,8 @@ def set_timing(request, app_id):
         timing = request.POST.get('timing')
         date = request.POST.get('a_date')
         obj.slot = True
+        obj.slot_timing = timing
+        obj.slot_date = date
         obj.save()
         new_timing = AppointmentTimings.objects.create(slot_timing=timing, appo_id=obj, date=date)
 
@@ -300,3 +302,10 @@ def add_prescription(request):
 
 def doctor_prescription(request):
     return render(request, 'doctor_prescription.html')
+
+def appointment_request(request):
+    appointment_request = Appointments.objects.select_related('doctor_id').filter(patient_id=request.user.id)
+    print(appointment_request)
+    context = {
+        'appointment_request':appointment_request    }
+    return render(request, 'appointment_request.html',context)

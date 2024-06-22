@@ -24,4 +24,5 @@ urlpatterns = [
     path('set_timing/<int:app_id>',views.set_timing, name="set_timing"),
     path('add_prescription/', views.add_prescription, name='add_prescription'),
     path('doctor_prescription', views.doctor_prescription, name='doctor_prescription'),
+    path('appointment_request', views.appointment_request, name='appointment_request'),
 ]
