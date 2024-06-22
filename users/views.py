@@ -3,13 +3,21 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
-from . models import NewUser
+from . models import Appointments, NewUser
 from django.db.models.functions import Trim
 from django.db.models import Q
-from datetime import datetime
+from django.utils import timezone
 
 
 from users.models import NewUser
+
+
+
+def patient_logout(request):
+    logout(request)
+    return redirect('/patient_login')
+
+
 
 # Create your views here.
 def admin_login(request):
@@ -188,9 +196,31 @@ def patient_db(request):
 def book_appointment(request):
     clinics=NewUser.objects.filter(user_type='clinic')
     return render(request,'book_appointment.html',{'clinics':clinics})
+def doctor_appo(request, id):
+    patient_id = request.user.id
+    clinic_id = id
+    doctors = NewUser.objects.filter(user_type='doctor', added_by=id)
+    print(patient_id, clinic_id)
     
+    if request.method == 'POST':
+        doctor_id = request.POST.get('doctor_id')
+        doctor = NewUser.objects.get(id=doctor_id)  # Retrieve the doctor instance
+        appointment = Appointments(
+            clinic_id=clinic_id,
+            patient_id=request.user,
+            doctor_id=doctor,  # Assign the doctor instance
+            timings=timezone.now()
+        )
+        appointment.save()
 
-def doctor_appo(request,id):
-    doctors=NewUser.objects.filter(user_type='doctor',added_by=id)
-    return render(request,'doctor_appo.html',{'doctors':doctors})
-    
+    return render(request, 'doctor_appo.html', {'doctors': doctors})
+
+def appointment_list(request):
+    clinic_id = request.user.id
+    appointments = Appointments.objects.filter(clinic_id=clinic_id).select_related('doctor_id','patient_id')
+
+    context = {
+        'data': appointments
+    }
+
+    return render(request, 'appointment_list.html', context)
