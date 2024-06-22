@@ -202,6 +202,7 @@ def patient_db(request):
 def book_appointment(request):
     clinics=NewUser.objects.filter(user_type='clinic')
     return render(request,'book_appointment.html',{'clinics':clinics})
+
 def doctor_appo(request, id):
     patient_id = request.user.id
     clinic_id = id
