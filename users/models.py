@@ -34,7 +34,7 @@ class AppointmentTimings(models.Model):
     
 
 class Rating(models.Model):
-    patient =  models.CharField(max_length=300, default='')
-    doctor = models.CharField(max_length=300, default='')
+    patient = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='ratings')
     rating = models.PositiveIntegerField()
     date = models.DateTimeField(auto_now_add=True)
