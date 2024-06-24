@@ -364,27 +364,4 @@ def appointment_request(request):
     context = {
         'appointment_request':appointment_request    }
     return render(request, 'appointment_request.html',context)
-    data = Prescription.objects.select_related('appo_id__doctor_id').filter(appo_id__patient_id=request.user.id)
-    
-    # Fetch ratings for the prescriptions
-    ratings = Rating.objects.filter(patient=request.user, prescription__in=data).select_related('prescription')
-    ratings_dict = {rating.prescription_id: rating for rating in ratings}
-
-    if request.method == "POST":
-        prescription_id = request.POST.get('prescription_id')
-        rating_value = request.POST.get('rating')
-        
-        if prescription_id and rating_value:
-            prescription = Prescription.objects.get(id=prescription_id)
-            patient = request.user
-            doctor = prescription.appo_id.doctor_id
-
-            # Create or update the Rating object
-            rating, created = Rating.objects.update_or_create(
-                prescription=prescription,
-                patient=patient,
-                defaults={'doctor': doctor, 'rating': rating_value, 'date': timezone.now()}
-            )
-            return redirect('doctor_prescription')  # Redirect to the same page or another page
-
-    return render(request, 'doctor_prescription.html', {'data': data, 'ratings_dict': ratings_dict})
+   
